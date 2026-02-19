@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+frames/
+demo_output/
+demo_recording_output/
+monitoring_output/
+sample_videos/
+analysis_results.json
