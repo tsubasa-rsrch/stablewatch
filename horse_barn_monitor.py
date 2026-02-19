@@ -77,7 +77,7 @@ Hazard categories to check:
 Be conservative: when in doubt, escalate to WARNING rather than SAFE.
 A false alarm is better than a missed emergency.
 
-Keep the description under 100 words. Respond ONLY with valid JSON, no markdown fences."""
+Keep the description under 80 words. Respond ONLY with raw JSON. Never use markdown code fences. Never use ```."""
 
 ANALYSIS_PROMPT = "Analyze this barn camera frame for horse safety. What do you see? Are there any hazards?"
 
