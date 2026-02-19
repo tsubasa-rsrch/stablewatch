@@ -50,12 +50,12 @@ python3 horse_barn_monitor.py --frame frames_danger/barn_fire_0004.jpg --no-serv
 echo ""
 sleep 2
 
-# ─── Demo 3: Casting (should be DANGER) ───
-echo -e "${BOLD}═══ Demo 3: Horse Casting — Trapped Against Wall ═══${RESET}"
+# ─── Demo 3: Colic signs (should be WARNING/DANGER) ───
+echo -e "${BOLD}═══ Demo 3: Colic Signs — Horse Staggering/Lying Down ═══${RESET}"
 echo ""
-echo -e "Analyzing: ${RED}Mare and foal, horse lying near wall${RESET}"
+echo -e "Analyzing: ${YELLOW}Horse showing signs of abdominal distress${RESET}"
 echo ""
-python3 horse_barn_monitor.py --frame frames_danger/casting_mare_foal_0030.jpg --no-server-check -v
+python3 horse_barn_monitor.py --frame frames_danger/colic_staggering_lying_down_0007.jpg --no-server-check -v
 echo ""
 sleep 2
 
@@ -69,12 +69,12 @@ python3 barn_monitor_realtime.py --video sample_videos/casting_mare_foal.mp4 --i
 echo ""
 sleep 1
 
-# ─── Demo 5: Real-time monitoring — Fire ───
-echo -e "${BOLD}═══ Demo 5: Real-time Monitoring — Fire Detection ═══${RESET}"
+# ─── Demo 5: Real-time monitoring — Escape ───
+echo -e "${BOLD}═══ Demo 5: Real-time Monitoring — Barn Escape ═══${RESET}"
 echo ""
-echo -e "Simulating barn fire incident..."
+echo -e "Simulating a horse escaping from its stall..."
 echo ""
-python3 barn_monitor_realtime.py --video sample_videos/barn_fire.mp4 --interval 10 --output demo_output --no-server-check
+python3 barn_monitor_realtime.py --video sample_videos/horse_escape_barn_stall.mp4 --interval 8 --output demo_output --no-server-check
 echo ""
 
 # ─── Summary ───
@@ -83,6 +83,7 @@ echo -e "${BOLD}═════════════════════�
 echo -e "${BOLD}  🐴 StableWatch Demo Complete${RESET}"
 echo -e "${BOLD}════════════════════════════════════════════════════${RESET}"
 echo ""
+echo -e "  ${GREEN}✓${RESET} 5 hazard types demonstrated: fire, colic, casting, escape, normal"
 echo -e "  ${GREEN}✓${RESET} 16 hazard categories across 4 domains"
 echo -e "  ${GREEN}✓${RESET} 4 severity levels: SAFE → MONITOR → WARNING → DANGER"
 echo -e "  ${GREEN}✓${RESET} Zero-shot detection — no training data needed"
