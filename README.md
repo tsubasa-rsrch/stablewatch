@@ -25,7 +25,7 @@ Camera → Frame extraction → Cosmos Reason 2 → Safety classification → Al
 ### Key Features
 
 - **Zero-shot detection**: No training data required. Cosmos Reason 2's physical reasoning understands horse behavior out of the box
-- **7 hazard categories**: Casting, entanglement, prolonged lying, colic signs, fire/smoke, escape, foaling difficulties
+- **16 hazard categories** across 4 domains: physical injury, health emergency, environment, stress behavior
 - **4-level severity**: SAFE → MONITOR → WARNING → DANGER
 - **Real-time alerts**: Telegram notifications on WARNING/DANGER events
 - **Fully local**: Runs on M4 Max MacBook Pro — no cloud API needed
@@ -37,9 +37,22 @@ Camera → Frame extraction → Cosmos Reason 2 → Safety classification → Al
 |----------|----------|----------|
 | Horse standing normally | SAFE | Log only |
 | Horse lying down briefly | MONITOR | Log + timestamp |
+| Horse near open gate | MONITOR | Log + monitor |
 | Horse lying for extended period | WARNING | Alert owner |
+| Repeated rolling (colic signs) | WARNING | Alert owner |
+| Stress behavior (wall kicking) | WARNING | Alert owner |
 | Horse trapped/cast against wall | DANGER | Emergency alert |
-| Smoke detected in barn | DANGER | Emergency alert |
+| Legs entangled in hay net | DANGER | Emergency alert |
+| Smoke/fire detected in barn | DANGER | Emergency alert |
+
+### Hazard Categories
+
+| Domain | Categories |
+|--------|-----------|
+| Physical Injury | Casting, Entanglement, Fall/Slip, Kick/Bite, Protrusion |
+| Health Emergency | Colic, Choking, Abnormal Posture |
+| Environment | Fire/Smoke, Escape, Wet Floor, Tools/Debris, Ammonia |
+| Stress Behavior | Cribbing, Weaving, Wall Kicking, Pacing |
 
 ## Architecture
 
@@ -93,11 +106,23 @@ Uses [NVIDIA Cosmos Reason 2](https://developer.nvidia.com/cosmos) (8B parameter
 2. **No WiFi**: SIM-equipped camera or IoT solution (Soracom) → cloud relay → StableWatch
 3. **Edge deployment**: NVIDIA Jetson for on-site inference
 
+## Danger Scenario Test Results
+
+Tested on casting, barn fire, and colic videos:
+
+| Scenario | Frames | DANGER | WARNING | Detection |
+|----------|--------|--------|---------|-----------|
+| Barn fire | 9 | 4 | 1 | Fire/smoke detected at confidence 0.99-1.0 |
+| Casting (mare+foal) | 10 | 2 | 4 | Correct escalation: MONITOR→WARNING→DANGER |
+| Casting (stall) | 13 | 0 | 1 | Calmer video, caught lying horse |
+| Colic (staggering) | 5 | 0 | 2 | Detected transition from eating to lying |
+| Normal barn | 6 | 0 | 0 | Correct baseline — no false alarms |
+
 ## Performance
 
 | Metric | Value |
 |--------|-------|
-| Avg inference time | 5.5s per frame |
+| Avg inference time | 5.5-9s per frame |
 | Model size | 8.1 GB (Q8_0) |
 | Memory usage | ~10 GB |
 | Monitoring interval | 10s recommended |
