@@ -271,16 +271,22 @@ def main():
     parser.add_argument("--output", default="monitoring_output", help="Output directory")
     parser.add_argument("--max-frames", type=int, default=0, help="Max frames (0=unlimited)")
     parser.add_argument("--verbose", "-v", action="store_true")
+    parser.add_argument(
+        "--no-server-check",
+        action="store_true",
+        help="Skip server health check",
+    )
 
     args = parser.parse_args()
 
     # Check server
-    if not check_server():
-        print("Starting Cosmos server...")
-        if not start_server():
-            sys.exit(1)
-    else:
-        print("Cosmos server: OK")
+    if not args.no_server_check:
+        if not check_server():
+            print("Starting Cosmos server...")
+            if not start_server():
+                sys.exit(1)
+        else:
+            print("Cosmos server: OK")
 
     if args.video:
         monitor_video(

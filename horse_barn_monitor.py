@@ -233,17 +233,25 @@ def analyze_frame(image_path: str, verbose: bool = False) -> dict:
 
         latency = time.time() - start_time
 
-        # Parse JSON response
+        # Parse JSON response — robust handling of code fences and truncation
         clean = text.strip()
-        # Strip markdown code fences (handle ```json ... ``` wrapping)
         import re
+
+        # Strategy 1: Strip complete ```json ... ``` fences
         fence_match = re.search(r'```(?:json)?\s*\n?(.*?)\n?```', clean, re.DOTALL)
         if fence_match:
             clean = fence_match.group(1).strip()
+        # Strategy 2: Opening ``` without closing (truncated response)
         elif clean.startswith("```"):
             lines = clean.split("\n")
             lines = [l for l in lines if not l.strip().startswith("```")]
             clean = "\n".join(lines)
+
+        # Strategy 3: Extract JSON object between first { and last }
+        brace_start = clean.find("{")
+        brace_end = clean.rfind("}")
+        if brace_start >= 0 and brace_end > brace_start:
+            clean = clean[brace_start:brace_end + 1]
 
         try:
             analysis = json.loads(clean)
